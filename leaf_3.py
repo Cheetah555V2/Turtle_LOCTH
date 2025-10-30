@@ -22,7 +22,7 @@ background = "white"            # สีพื้นหลัง
 
 
 
-# Barnsley transforms & probabilities (classic)
+# Barnsley transforms & probabilities
 
 render_while_drawing = False
 def f1(x, y): return 0.0, 0.16 * y
@@ -41,7 +41,6 @@ for p in PROBS:
     cummulative_probs.append(acc)
 
 def pick_transform_index(r):
-    # r in [0,1); linear scan of 4 values is fine and fast
     for i, cp in enumerate(cummulative_probs):
         if r < cp:
             return i
@@ -49,7 +48,7 @@ def pick_transform_index(r):
 
 # Producer/consumer queues
 draw_queue = queue.Queue(maxsize=256)  # holds chunks (lists) of (x,y) points
-CHUNK_SIZE = 2000                       # number of points per chunk (tweak for perf)
+CHUNK_SIZE = 2000                      # number of points per chunk (tweak for perf)
 
 def worker_generate_points(iterations, seed, skip_initial=20):
     """
@@ -172,6 +171,6 @@ def main():
 if __name__ == "__main__":
     t0 = time.time()
     mode = "render-after" if render_while_drawing else "render-during"
-    print(f"Chaos-game Barnsley: points={depth}, dot_size={dot_size}, color={dot_color}, mode={mode}")
+    print(f"Barnsley: points={depth}, dot_size={dot_size}, color={dot_color}")
     main()
     print("Done in %.2f s" % (time.time() - t0))
